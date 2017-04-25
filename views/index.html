@@ -1,0 +1,415 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>HiChat</title>
+	<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0">
+	<link rel="stylesheet" href="https://cdn.bootcss.com/bootstrap/3.3.7/css/bootstrap.min.css">
+	<style>
+		@font-face {
+			font-family: 'iconfont';  /* project id 284955 */
+			src: url('//at.alicdn.com/t/font_vvnfmcih2vd6ajor.eot');
+			src: url('//at.alicdn.com/t/font_vvnfmcih2vd6ajor.eot?#iefix') format('embedded-opentype'),
+			url('//at.alicdn.com/t/font_vvnfmcih2vd6ajor.woff') format('woff'),
+			url('//at.alicdn.com/t/font_vvnfmcih2vd6ajor.ttf') format('truetype'),
+			url('//at.alicdn.com/t/font_vvnfmcih2vd6ajor.svg#iconfont') format('svg');
+		}
+		.iconfont {
+			font-family: 'iconfont';
+			font-size: 20px;
+			font-style: initial;
+		}
+		#nickname {
+			height: 50px;
+			box-sizing: border-box;
+		}
+		#login {
+			height: 46px;
+			background: none;
+			border: none;
+			background-color: #419419;
+		}
+		body {
+			background: #ebebeb;
+		}
+		ul {
+			padding: 0;
+			margin: 0;
+		}
+		img {
+			max-width: 100%;
+			vertical-align: middle;
+		}
+		.container{
+			padding: 0;
+		}
+		.modal-header{
+			border-bottom: 0;
+		}
+		.form-group{
+			margin-bottom: 0;
+		}
+		.modal-footer{
+			border-top: 0;
+		}
+		.i-b-rec-text, .i-b-sen-text {
+			margin: 20px 26px 0 10px;
+			position: relative;
+		}
+		.i-b-sen-text {
+			margin: 20px 10px 0 23px;
+		}
+		.i-b-rec-text img, .i-b-sen-text img {
+			position: absolute;
+			width: 41px;
+			height: 41px;
+			left: 0;
+			top: 0;
+			background: #fff;
+		}
+		.i-b-sen-text img {
+			left: auto;
+			right: 0;
+		}
+		.i-b-rec-text div, .i-b-sen-text div {
+			position: relative;
+			margin-left: 41px;
+			margin-right: 25px;
+			text-align: initial;
+		}
+		.i-b-sen-text div {
+			margin-left: 25px;
+			margin-right: 41px;
+		}
+		.i-b-rec-text div span, .i-b-sen-text div span {
+			float: left;
+			min-height: 40px;
+			min-width: 48px;
+			margin-left: 12px;
+			font-size: 16px;
+			border: 1px #ccc solid;
+			background: #fafafa;
+			border-radius: 5px;
+			position: relative;
+		}
+		.i-b-sen-text div span {
+			background: #9ce553;
+			border-color: #7ac754;
+			float: right;
+			margin-left: 0;
+			margin-right: 12px;
+		}
+		.i-b-rec-text div i, .i-b-sen-text div i {
+			position: absolute;
+			width: 12px;
+			height: 12px;
+			background: url(./images/rec-txt-bg.png) 0px -15px no-repeat;
+			left: -12px;
+			top: 13px;
+		}
+		.i-b-sen-text div i {
+			background: url(../images/sen-txt-bg.png) right -15px no-repeat;
+			left: auto;
+			right: -12px;
+		}
+		.i-b-rec-text div span em, .i-b-sen-text div span em {
+			font-style: normal;
+			padding: 9px 10px;
+			display: block;
+		}
+		.system {
+			margin-top: 20px;
+			text-align: center;
+		}
+		.system-box {
+			display: inline-block;
+			background: #d5d5d5;
+			color: #fff;
+			font-size: 14px;
+			padding: 3px 5px;
+			border-radius: 3px;
+		}
+		.system-box .name {
+			vertical-align: top;
+			color: #ff8006;
+			max-width: 140px;
+		}
+		.footer{
+			position: fixed;
+			bottom: 0;
+			left: 0;
+			right: 0;
+			height: 50px;
+			width: 100%;
+			background-color: #fff;
+		}
+		.msg-wrapper {
+			position: relative;
+			margin-top: 9px;
+		}
+		.msg-text {
+			margin-left: 50px;
+			margin-right: 90px;
+		}
+		.msg-text .form-control {
+			border-width: 0 0 1px 0;
+			height: 32px;
+			padding: 6px;
+			box-shadow: none;
+			border-radius: 0;
+		}
+		.msg-voice, .msg-emoji {
+			position: absolute;
+			left: 9px;
+			width: 40px;
+			overflow: hidden;
+		}
+		.msg-voice .btn, .msg-emoji .btn {
+			border: none;
+			height: 32px;
+			line-height: 32px;
+			width: 32px;
+			padding: 0;
+			border: 1px solid #999;
+			border-radius: 100%;
+			background: none;
+		}
+		.msg-emoji .btn i, .msg-voice .btn i {
+			font-size: 16px;
+			color: #666;
+		}
+		.msg-emoji .btn, .msg-emoji .btn {
+			margin-left: 8px;
+			border: none;
+			height: 32px;
+			line-height: 32px;
+			width: 32px;
+			padding: 0;
+			border: 1px solid #999;
+			border-radius: 100%;
+		}
+		.msg-emoji {
+			left: auto;
+			top: 0;
+			right: 53px;
+			text-align: right;
+		}
+		.msg-emoji .btn {
+			margin-left: 0;
+		}
+		.msg-emoji .btn i {
+			font-size: 20px;
+		}
+		.msg-send {
+			position: absolute;
+			top: 0;
+			right: 8px;
+			text-align: right;
+		}
+		.msg-send .btn {
+			padding: 0;
+			width: 40px;
+			height: 32px;
+			line-height: 32px;
+			font-size: 14px;
+			color: #fff;
+			background-color: #00b50c;
+			border: none;
+		}
+		.msg-send .btn:active:hover, .msg-send .btn:before {
+			color: #fff;
+			background-color: #00b50c;
+		}
+		.msg-semd .btn:active {
+			background-color: #309e00;
+		}
+	</style>
+</head>
+<body>
+	<div class="container">
+		<div class="row clearfix">
+			<div class="col-md-12 column">
+				<div class="modal fade login-modal" id="mymodal" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel">
+					<div class="modal-dialog modal-sm" role="document">
+						<div class="modal-content">
+							<form role="form" class="login-dialog">
+								<div class="modal-header">
+									<!-- <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button> -->
+									<h4 class="modal-title" id="myModalLabel">
+										昵称
+									</h4>
+								</div>
+								<div class="modal-body">
+									<div class="form-group">
+										<input type="text" class="form-control" id="nickname" placeholder="给自己起一个好听的昵称吧!~" autocomplete="off" />
+									</div>
+								</div>
+								<div class="modal-footer">
+									<button type="button" class="btn btn-block btn-primary" id="login">保存</button>
+								</div>
+							</form>
+						</div>
+					</div>
+				</div>
+				<div id="messages">
+					
+				</div>
+				<div class="footer">
+					<div class="msg-wrapper">
+						<div class="form-group msg-voice">
+							<button class="btn btn-default"><i class="iconfont">&#xe74b;</i></button>
+						</div>
+						<div class="form-group msg-text">
+							<input type="text" class="form-control" id="newMsgBox" autocomplete="off" />
+						</div>
+						<div class="form-group msg-emoji">
+							<button class="btn"><i class="iconfont">&#xe606;</i></button>
+						</div>
+						<div class="form-group msg-send">
+							<button class="btn btn-default" id="newMsgSend">发送</button>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<script src="https://cdn.bootcss.com/socket.io/1.7.3/socket.io.min.js"></script>
+	<script src="https://cdn.bootcss.com/jquery/3.2.1/jquery.min.js"></script>
+	<script src="https://cdn.bootcss.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+	<script src="https://cdn.bootcss.com/layer/3.0.1/layer.min.js"></script>
+	<script>
+		// 元素统一在这里选择
+		var loginModal = $('.login-modal'),
+		loginBtn = $('#login'),
+		loginName = $('#nickname'),
+		container = $('#messages'),
+		msgSendBtn = $('#newMsgSend'),
+		msgSendText = $('#newMsgBox'),
+		loginDialog = $('.login-dialog'),
+		sendImage = $('#sendImage');
+		// 页面加载完成(包含JS部分)
+
+		window.onload = function () {			
+			// 初始化一个对象
+			var chat = new Chat()
+			chat.init()
+			// 为登录按钮增加事件, 读取Chat对象的login属性函数
+			loginModal.modal({
+				keyboard: false,
+				backdrop: 'static',
+			});
+			loginBtn.on('click', function () {
+				// 验证用户输入的值
+				let reg = /\s/, val = loginName.val()
+				if (reg.exec(val) != null) {
+					fnGlobal.tips('昵称不允许包含空格哦! ~(@^_^@)~', '#nickname')
+					return false
+				} else if (val.length > 10) {
+					fnGlobal.tips('您的昵称太长了亲! ~(@^_^@)~', '#nickname')
+					return false
+				} else if (val.length <= 0) {
+					fnGlobal.tips('群聊名称不允许为空哦!~ ~(@^_^@)~', '#nickname')
+				} else {
+					chat.login(val)
+					socket.uName = val
+				}
+			})
+			msgSendText.keyup((event) => {
+				if (event.keyCode == 13) {
+					let val = msgSendText.val()
+					chat.newMsg(val)
+					msgSendText.val('')
+				}
+			})
+			msgSendBtn.on('click', () => {
+				let val = msgSendText.val()
+				chat.newMsg(val)
+				msgSendText.val('')
+			})
+			loginDialog.on('submit', () => {
+				loginBtn.click()
+				return false;
+			})
+		}
+
+		var Chat = function () {
+			this.socket = null;
+		}
+
+		Chat.prototype = {
+			init: () => {
+				let _me = this
+				_me.socket = io()
+				_me.socket.on('connect', () => {
+					// console.log('服务器连接成功')
+				})
+				_me.socket.on('loginStatus', (data) => {
+					if (data.status == 0) {
+						// console.log('登录成功, 用户名是', socket.uName)
+						loginModal.modal('toggle')
+					} else {
+						fnGlobal.tips('这个名字太火啦, 已经被占用! ~(@^_^@)~', '#nickname')
+					}
+				})
+				_me.socket.on('system', (n) => {
+					fnGlobal.sendSystemMsg('系统', n, '加入了群聊')
+				})
+				_me.socket.on('leaveRoom', (n) => {
+					fnGlobal.sendSystemMsg('系统', n, '离开了房间')
+				})
+				_me.socket.on('getMessage', (data) => {
+					// console.log(data)
+					let type = 0
+					if (!data.msg) {
+						fnGlobal.tips('您什么都没输入!~', '#newMsgBox', 1)
+						return false
+					}
+					if (data.name == socket.uName) {
+						type = 2
+					}
+					fnGlobal.sendMessage(data.msg, type)
+				})
+			},
+			// 用户发送登录请求
+			login: (n) => {
+				// n为用户输入的姓名
+				let _me = this
+				let nickName = fnGlobal.trim(n)
+				_me.userName = nickName
+				_me.socket.emit('login', nickName)
+			},
+			newMsg: (msg, user) => {
+				let _me = this
+				_me.socket.emit('newMessage', msg)
+			}
+		}
+
+		// 公共函数模块
+		const fnGlobal = {
+			// 去除字符串前后和中间出现的所有空格
+			trim: function (str) {
+				let result = str.replace(/\s/g, "")
+				return result
+			},
+			tips: function (str, el, position = 3) {
+				layer.tips(str, el, {
+					tips: [position, '#ff3030']
+				});
+			},
+			sendMessage: (msg, type) => {
+				let newMsg = ''
+				if (type != 2) {
+					newMsg = '<div class="i-b-rec-text clearfix"><img src="http://www.weixinduihua.com/Public/static/face/10020.jpg"><div><span><i></i><em>' + msg + '</em></span></div></div>';
+				} else {
+					newMsg = '<div class="i-b-sen-text clearfix"><img src="http://www.weixinduihua.com/Public/static/face/10020.jpg"><div><span><i></i><em>' + msg + '</em></span></div></div>';
+				}
+				container.append(newMsg)
+			},
+			sendSystemMsg: (type, name, event) => {
+				let newSysEl = '<div class="system"><div class="system-box">' + type + ': <span class="name">' + name + '</span>' + event + '</div></div>'
+				container.append(newSysEl)
+			}
+		}
+	</script>
+</body>
+</html>

@@ -1,0 +1,28 @@
+{
+  "name": "hichat",
+  "version": "0.0.1",
+  "description": "hichat online node.js chat for web",
+  "main": "server.js",
+  "scripts": {
+    "test": "yes"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/6ea/hichat.git"
+  },
+  "keywords": [
+    "chat",
+    "node.js"
+  ],
+  "author": "Fea",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/6ea/hichat/issues"
+  },
+  "homepage": "https://github.com/6ea/hichat#readme",
+  "dependencies": {
+    "ejs": "^2.5.6",
+    "express": "^4.15.2",
+    "socket.io": "^1.7.3"
+  }
+}
